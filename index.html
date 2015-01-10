@@ -20,7 +20,6 @@
     <script>
       var socket = io();
       socket.on('update', function(update) {
-        console.log(update.state);
         var statePath = '#' + update.name + ' .' + update.service;
         $(statePath).html(update.html);
       })
