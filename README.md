@@ -13,3 +13,6 @@ Supported Services
 License
 -------
 watd uses the [ISC license](http://en.wikipedia.org/wiki/ISC_license).
+
+[lastfm]: http://www.last.fm/home
+[steam]: http://steamcommunity.com/
