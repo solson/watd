@@ -63,7 +63,7 @@ function initWatchers() {
         var html = '';
         stream.on('data', function(chunk) { html += chunk; });
         stream.on('end', function() {
-          if (service.cachedHtml == html) { return; }
+          if (service.cachedHtml === html) { return; }
           // Here we cache the most recently generated HTML into the
           // config.users structure which is interpolated into the index.html
           // template, so when a new client loads the page the most
@@ -75,9 +75,9 @@ function initWatchers() {
         });
       }
 
-      if (service.service == 'lastfm') {
+      if (service.service === 'lastfm') {
         initLastfmWatcher(service.username, sendUpdate);
-      } else if (service.service == 'steam') {
+      } else if (service.service === 'steam') {
         // TODO: batch the steam requests into one request, since the steam API
         // supports it
         initSteamWatcher(service.username, sendUpdate);
@@ -125,7 +125,7 @@ function initLastfmWatcher(username, sendUpdate) {
 
       if (track.image instanceof Array) {
         var small_image = track.image.filter(function(image) {
-          return image.size == 'small';
+          return image.size === 'small';
         })[0];
         if (small_image) { data.image = small_image['#text']; }
       }
@@ -169,9 +169,9 @@ function initSteamWatcher(username, sendUpdate) {
         }
 
         // TODO: Get rid of magic numbers
-        if (player.personastateflags == 512) {
+        if (player.personastateflags === 512) {
           data.state += ' (Mobile)';
-        } else if (player.personastateflags == 1024) {
+        } else if (player.personastateflags === 1024) {
           data.state += ' (Big Picture mode)';
         }
 
@@ -188,7 +188,7 @@ Steam.ready(function(err) {
 });
 
 app.get('/', function(req, res) {
-  if (process.env.NODE_ENV == 'DEVELOPMENT') {
+  if (process.env.NODE_ENV === 'DEVELOPMENT') {
     mu.clearCache();
   }
   mu.compileAndRender('index.html', {
