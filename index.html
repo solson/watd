@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+  <title>{{title}}</title>
+  </head>
+  <body>
+  <h1>{{title}}</h1>
+    {{#users}}
+      <div id="{{name}}">
+        <h2>{{name}}</h2>
+        {{#services}}
+          <div class="{{service}}">
+            {{{cachedHtml}}}
+          </div>
+        {{/services}}
+      </div>
+    {{/users}}
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+      var socket = io();
+      socket.on('update', function(update) {
+        console.log(update.state);
+        var statePath = '#' + update.name + ' .' + update.service;
+        $(statePath).html(update.html);
+      })
+    </script>
+  </body>
+</html>

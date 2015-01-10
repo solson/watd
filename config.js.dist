@@ -1,0 +1,26 @@
+var users = [
+  {
+    'name': 'philip',
+    'services': [
+      {'service': 'lastfm', 'username': 'fryfm'},
+      {'service': 'steam', 'username': '76561198036964321'}
+    ]
+  },
+  {
+    'name': 'bender',
+    'services': [
+      {'service': 'lastfm', 'username': 'BenderIsGreat'},
+      {'service': 'steam', 'username': '76561198040534321'}
+    ]
+  }
+];
+
+module.exports = {
+  users: users,
+  title: "What Are They Doing?",
+  port: 3000,
+  requestIntervalMs: 10000,
+  lastfmApiKey: '00000000000000000000000000000000',
+  lastfmApiSecret: '00000000000000000000000000000000',
+  steamApiKey: '00000000000000000000000000000000'
+};
