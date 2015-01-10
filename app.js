@@ -164,7 +164,7 @@ function initSteamWatcher(username, sendUpdate) {
           data.state = STATES[player.personastate];
         }
 
-        if (data.personastate == 0 && player.lastlogoff) {
+        if (player.personastate == 0 && player.lastlogoff) {
           data.lastLogoff = moment.unix(player.lastlogoff).fromNow();
         }
 
