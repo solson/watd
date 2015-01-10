@@ -124,12 +124,10 @@ function initLastfmWatcher(username, sendUpdate) {
       }
 
       if (track.image instanceof Array) {
-        for (var i = 0, len = track.image.length; i < len; ++i) {
-          if (track.image[i].size == 'small') {
-            data.image = track.image[i]['#text']
-            break;
-          }
-        }
+        var small_image = track.image.filter(function(image) {
+          return image.size == 'small';
+        })[0];
+        if (small_image) { data.image = small_image['#text']; }
       }
 
       sendUpdate(data);
