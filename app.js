@@ -188,7 +188,7 @@ Steam.ready(function(err) {
 });
 
 app.get('/', function(req, res) {
-  if (process.env.NODE_ENV === 'DEVELOPMENT') {
+  if (process.env.NODE_ENV !== 'production') {
     mu.clearCache();
   }
   mu.compileAndRender('index.html', {
