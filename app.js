@@ -19,6 +19,10 @@ var STEAM_STATES = [
   'Offline', 'Online', 'Busy', 'Away', 'Snooze', 'Looking to trade',
   'Looking to play'
 ];
+var STEAM_STATE_FLAGS = {
+  512: 'Mobile',
+  1024: 'Big Picture Mode'
+}
 
 /**
  * Run the given function repeatedly. Wait the given length of time between each
@@ -38,7 +42,7 @@ function repeat(interval, f) {
  * Print an error message including the source of the error.
  */
 function logError(source, err) {
-  console.log("error in " + source + ":", err.stack);
+  console.log('error in ' + source + ':', err.stack);
 }
 
 /**
@@ -101,7 +105,7 @@ function initLastfmWatcher(username, sendUpdate) {
         track = track[0];
       }
 
-      var nowPlaying = !!(track["@attr"] && track["@attr"]["nowplaying"]);
+      var nowPlaying = !!(track['@attr'] && track['@attr']['nowplaying']);
 
       var data = {
         username: username,
@@ -156,11 +160,9 @@ function initSteamWatcher(username, sendUpdate) {
           data.lastLogoff = moment.unix(player.lastlogoff).fromNow();
         }
 
-        // TODO: Get rid of magic numbers
-        if (player.personastateflags === 512) {
-          data.state += ' (Mobile)';
-        } else if (player.personastateflags === 1024) {
-          data.state += ' (Big Picture mode)';
+        if (player.personastateflags in STEAM_STATE_FLAGS) {
+          data.state += ' (' + STEAM_STATE_FLAGS[player.personastateflags]
+            + ')';
         }
 
         sendUpdate(data);
