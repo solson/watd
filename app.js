@@ -42,18 +42,6 @@ function logError(source, err) {
 }
 
 /**
- * If err is not null, print an error message including the source of the error
- * and exit the process.
- */
-function checkError(source, err) {
-  if (err) {
-    logError(source, err);
-    console.log("bailing out early");
-    process.exit(1);
-  }
-}
-
-/**
  * Initialize the infinite loops which repeatedly check for new updates from the
  * various services we want to monitor.
  */
@@ -182,7 +170,7 @@ function initSteamWatcher(username, sendUpdate) {
 }
 
 Steam.ready(function(err) {
-  checkError('Steam.ready', err);
+  if (err) { throw err; }
   initWatchers();
 });
 
