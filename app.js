@@ -90,7 +90,8 @@ function initLastfmWatcher(username, sendUpdate) {
     });
     request.on('success', function(data) {
       if (!data || !data.recenttracks || !data.recenttracks.track) {
-        logError('lastfm/user.getrecenttracks', 'unexpected response');
+        logError('lastfm/user.getrecenttracks',
+                 new Error('unexpected response'));
         done();
         return;
       }
@@ -136,7 +137,7 @@ function initSteamWatcher(username, sendUpdate) {
         logError('steam.getPlayerSummaries', err);
       } else if (!data.players || !(data.players instanceof Array) ||
                  !data.players[0]) {
-        logError('steam.getPlayerSummaries', 'unexpected response');
+        logError('steam.getPlayerSummaries', new Error('unexpected response'));
       } else {
         var player = data.players[0];
         var data = {
