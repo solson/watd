@@ -160,9 +160,9 @@ function initSteamWatcher(username, sendUpdate) {
           data.lastLogoff = moment.unix(player.lastlogoff).fromNow();
         }
 
-        if (player.personastateflags in STEAM_STATE_FLAGS) {
-          data.state += ' (' + STEAM_STATE_FLAGS[player.personastateflags]
-            + ')';
+        var stateFlag = STEAM_STATE_FLAGS[player.personastateflags];
+        if (stateFlag) {
+          data.state += ' (' + stateFlag + ')';
         }
 
         sendUpdate(data);
