@@ -15,6 +15,10 @@ var lastfm = new LastFmNode({
 
 var Steam = require('steam-webapi');
 Steam.key = config.steamApiKey;
+var STEAM_STATES = [
+  'Offline', 'Online', 'Busy', 'Away', 'Snooze', 'Looking to trade',
+  'Looking to play'
+];
 
 /**
  * Run the given function repeatedly. Wait the given length of time between each
@@ -146,11 +150,6 @@ function initSteamWatcher(username, sendUpdate) {
                  !data.players[0]) {
         logError('steam.getPlayerSummaries', 'unexpected response');
       } else {
-        var STATES = [
-          'Offline', 'Online', 'Busy', 'Away', 'Snooze', 'Looking to trade',
-          'Looking to play'
-        ];
-
         var player = data.players[0];
         var data = {
           username: player.personaname,
@@ -161,7 +160,7 @@ function initSteamWatcher(username, sendUpdate) {
         if (player.gameextrainfo) {
           data.state = 'Playing ' + player.gameextrainfo;
         } else {
-          data.state = STATES[player.personastate];
+          data.state = STEAM_STATES[player.personastate];
         }
 
         if (player.personastate == 0 && player.lastlogoff) {
