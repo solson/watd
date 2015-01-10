@@ -38,7 +38,7 @@ function repeat(interval, f) {
  * Print an error message including the source of the error.
  */
 function logError(source, err) {
-  console.log("error in " + source + ":", err);
+  console.log("error in " + source + ":", err.stack);
 }
 
 /**
@@ -170,7 +170,10 @@ function initSteamWatcher(username, sendUpdate) {
 }
 
 Steam.ready(function(err) {
-  if (err) { throw err; }
+  if (err) {
+    logError('Steam.ready', err);
+    process.exit(1);
+  }
   initWatchers();
 });
 
