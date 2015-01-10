@@ -197,5 +197,5 @@ app.get('/', function(req, res) {
 });
 
 http.listen(config.port, function() {
-  console.log('Listening on http://localhost:3000');
+  console.log('Listening on http://localhost:' + config.port);
 });
