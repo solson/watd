@@ -1,3 +1,5 @@
+'use strict';
+
 var config = require('./config'),
     app    = require('express')(),
     http   = require('http').Server(app),
