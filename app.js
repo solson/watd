@@ -45,7 +45,7 @@ function repeat(interval, f) {
  * Print an error message including the source of the error.
  */
 function logError(source, err) {
-  console.log('error in ' + source + ':', err.stack);
+  console.log('error in ' + source + ':', err.stack ? err.stack : err);
 }
 
 /**
