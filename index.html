@@ -2,22 +2,26 @@
 <html>
   <head>
     <title>{{title}}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
     <style media="screen" type="text/css">
       .avatar { width: 32px; height: 32px; }
     </style>
   </head>
   <body>
-  <h1>{{title}}</h1>
-    {{#users}}
-      <div id="{{name}}">
-        <h2>{{name}}</h2>
-        {{#services}}
-          <div class="{{service}}">
-            {{{cachedHtml}}}
-          </div>
-        {{/services}}
-      </div>
-    {{/users}}
+    <div class="container">
+      <h1>{{title}}</h1>
+      {{#users}}
+        <div id="{{name}}">
+          <h2>{{name}}</h2>
+          {{#services}}
+            <div class="{{service}}">
+              {{{cachedHtml}}}
+            </div>
+          {{/services}}
+        </div>
+      {{/users}}
+    </div>
+
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
