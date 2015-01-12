@@ -1,7 +1,12 @@
 {{#image}}<img class="avatar" src="{{image}}" alt="" />{{/image}}
-<b><a href="http://www.last.fm/user/{{username}}">{{username}}</a>
-{{#nowPlaying}}is listening to{{/nowPlaying}}
-{{^nowPlaying}}last listened to{{/nowPlaying}}</b>
-{{artist}} &mdash; <a href="{{url}}">{{track}}</a>
-{{#album}}&mdash; {{album}}{{/album}}
+<b>
+  <a href="http://www.last.fm/user/{{username}}">{{username}}</a>
+  {{#nowPlaying}}is listening to{{/nowPlaying}}
+  {{^nowPlaying}}last listened to{{/nowPlaying}}
+</b>
+<a href="http://www.last.fm/music/{{artist}}">{{artist}}</a>
+&mdash; <a href="{{url}}">{{track}}</a>
+{{#album}}
+  &mdash; <a href="http://www.last.fm/music/{{artist}}/{{album}}">{{album}}</a>
+{{/album}}
 {{#timeAgo}}<b>{{timeAgo}}</b>{{/timeAgo}}
