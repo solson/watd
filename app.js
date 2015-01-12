@@ -1,11 +1,12 @@
 'use strict';
 
-var config = require('./config'),
-    app    = require('express')(),
-    http   = require('http').Server(app),
-    io     = require('socket.io')(http),
-    moment = require('moment'),
-    mu     = require('mu2');
+var config  = require('./config'),
+    express = require('express'),
+    app     = express(),
+    http    = require('http').Server(app),
+    io      = require('socket.io')(http),
+    moment  = require('moment'),
+    mu      = require('mu2');
 
 var GitHubApi = require('github');
 var github = new GitHubApi({version: '3.0.0'});
@@ -208,6 +209,8 @@ Steam.ready(function(err) {
   }
   initWatchers();
 });
+
+app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req, res) {
   if (process.env.NODE_ENV !== 'production') {
