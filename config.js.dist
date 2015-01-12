@@ -2,24 +2,24 @@
 
 var users = [
   {
-    'name': 'philip',
-    'services': [
-      {'service': 'lastfm', 'username': 'fryfm'},
-      {'service': 'steam', 'username': '76561198036964321'}
+    name: 'philip',
+    services: [
+      {service: 'lastfm', username: 'fryfm'},
+      {service: 'steam', username: '76561198036964321'}
     ]
   },
   {
-    'name': 'bender',
-    'services': [
-      {'service': 'lastfm', 'username': 'BenderIsGreat'},
-      {'service': 'steam', 'username': '76561198040534321'}
+    name: 'bender',
+    services: [
+      {service: 'lastfm', username: 'BenderIsGreat'},
+      {service: 'steam', username: '76561198040534321'}
     ]
   }
 ];
 
 module.exports = {
   users: users,
-  title: "What Are They Doing?",
+  title: 'What Are They Doing?',
   port: 3000,
   requestIntervalMs: 10000,
   lastfmApiKey: '00000000000000000000000000000000',
