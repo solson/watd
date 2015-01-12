@@ -9,6 +9,8 @@ Supported Services
 ------------------
 * [last.fm][lastfm]
 * [Steam][steam]
+* [GitHub][github] (partial)
+
 
 License
 -------
@@ -16,3 +18,4 @@ watd uses the [ISC license](http://en.wikipedia.org/wiki/ISC_license).
 
 [lastfm]: http://www.last.fm/home
 [steam]: http://steamcommunity.com/
+[github]: https://github.com/

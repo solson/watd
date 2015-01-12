@@ -11,6 +11,7 @@ var users = [
   {
     name: 'bender',
     services: [
+      {service: 'github', username: 'OnesAndZeros'},
       {service: 'lastfm', username: 'BenderIsGreat'},
       {service: 'steam', username: '76561198040534321'}
     ]

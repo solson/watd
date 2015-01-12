@@ -7,6 +7,9 @@ var config = require('./config'),
     moment = require('moment'),
     mu     = require('mu2');
 
+var GitHubApi = require('github');
+var github = new GitHubApi({version: '3.0.0'});
+
 var LastFmNode = require('lastfm').LastFmNode;
 var lastfm = new LastFmNode({
   api_key: config.lastfmApiKey,
@@ -77,13 +80,39 @@ function initWatchers() {
         // TODO: batch the steam requests into one request, since the steam API
         // supports it
         initSteamWatcher(service.username, sendUpdate);
+      } else if (service.service === 'github') {
+        initGithubWatcher(service.username, sendUpdate);
+      } else {
+        throw new Error('unsupported service: ' + service.service);
       }
     });
   });
 }
 
+function initGithubWatcher(username, sendUpdate) {
+  repeat(config.requestIntervals.github, function(done) {
+    github.authenticate({type: 'oauth', token: config.githubAccessToken});
+    github.events.getFromUserPublic({user: username}, function(err, events) {
+      if (err) {
+        logError('github.events.getFromUserPublic', err);
+        return done();
+      }
+
+      var latestEvent = events[0];
+      sendUpdate({
+        avatar: latestEvent.actor.avatar_url,
+        user: username,
+        eventType: latestEvent.type,
+        timeAgo: moment(latestEvent.created_at, moment.ISO_8601).fromNow(),
+        repo: latestEvent.repo.name
+      });
+      done();
+    });
+  });
+}
+
 function initLastfmWatcher(username, sendUpdate) {
-  repeat(config.requestIntervalMs, function(done) {
+  repeat(config.requestIntervals.lastfm, function(done) {
     var request = lastfm.request('user.getrecenttracks', {
       user: username,
       limit: 1
@@ -135,7 +164,7 @@ function initLastfmWatcher(username, sendUpdate) {
 
 function initSteamWatcher(username, sendUpdate) {
   var steam = new Steam();
-  repeat(config.requestIntervalMs, function(done) {
+  repeat(config.requestIntervals.steam, function(done) {
     steam.getPlayerSummaries({steamids: username}, function(err, data) {
       if (err) {
         logError('steam.getPlayerSummaries', err);
