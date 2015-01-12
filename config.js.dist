@@ -22,7 +22,12 @@ module.exports = {
   users: users,
   title: 'What Are They Doing?',
   port: 3000,
-  requestIntervalMs: 10000,
+  requestIntervals: {
+    github: 60000,
+    lastfm: 10000,
+    steam: 10000
+  },
+  githubAccessToken: '0000000000000000000000000000000000000000',
   lastfmApiKey: '00000000000000000000000000000000',
   lastfmApiSecret: '00000000000000000000000000000000',
   steamApiKey: '00000000000000000000000000000000'
