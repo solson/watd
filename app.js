@@ -1,12 +1,14 @@
 'use strict';
 
-var config  = require('./config'),
-    express = require('express'),
-    app     = express(),
-    http    = require('http').Server(app),
-    io      = require('socket.io')(http),
-    moment  = require('moment'),
-    mu      = require('mu2');
+var config     = require('./config'),
+    express    = require('express'),
+    app        = express(),
+    fs         = require('fs'),
+    http       = require('http').Server(app),
+    io         = require('socket.io')(http),
+    moment     = require('moment'),
+    path       = require('path'),
+    tinyliquid = require('tinyliquid');
 
 var GitHubApi = require('github');
 var github = new GitHubApi({version: '3.0.0'});
@@ -27,6 +29,35 @@ var STEAM_STATE_FLAGS = {
   512: 'Mobile',
   1024: 'Big Picture Mode'
 }
+
+/*
+ * Parse the tinyliquid templates in the templates directory into an object of
+ * rendering functions. Given a file 'templates/foo.html' we will have the
+ * rendering function 'TEMPLATES.foo(locals, callback)'.
+ */
+function parseTemplates(templateDir) {
+  var templates = {};
+  fs.readdirSync(templateDir).forEach(function(file) {
+    if (/\.html$/.test(file)) {
+      var name = file.slice(0, file.length - 5);
+      var source = fs.readFileSync(path.join(templateDir, file), 'utf8');
+      var renderFn = tinyliquid.compile(source);
+      templates[name] = function(locals, callback) {
+        var context = tinyliquid.newContext({locals: locals});
+        return renderFn(context, function(err) {
+          if (err) {
+            callback(err, null);
+          } else {
+            callback(null, context.getBuffer());
+          }
+        });
+      };
+    }
+  });
+  return templates;
+}
+var TEMPLATE_DIR = path.join(__dirname, 'templates');
+var TEMPLATES = parseTemplates(TEMPLATE_DIR);
 
 /**
  * Run the given function repeatedly. Wait the given length of time between each
@@ -59,10 +90,11 @@ function initWatchers() {
   config.users.forEach(function(user) {
     user.services.forEach(function(service) {
       var sendUpdate = function(data) {
-        var stream = mu.compileAndRender(service.service + '.html', data);
-        var html = '';
-        stream.on('data', function(chunk) { html += chunk; });
-        stream.on('end', function() {
+        TEMPLATES[service.name](data, function(err, html) {
+          if (err) {
+            logError('sendUpdate for ' + service.name, err);
+            return;
+          }
           if (service.cachedHtml === html) { return; }
           // Here we cache the most recently generated HTML into the
           // config.users structure which is interpolated into the index.html
@@ -70,21 +102,21 @@ function initWatchers() {
           // recent data will be loaded with it.
           service.cachedHtml = html;
           io.emit('update', {
-            name: user.name, service: service.service, html: html
+            name: user.name, service: service.name, html: html
           });
         });
       }
 
-      if (service.service === 'lastfm') {
+      if (service.name === 'lastfm') {
         initLastfmWatcher(service.username, sendUpdate);
-      } else if (service.service === 'steam') {
+      } else if (service.name === 'steam') {
         // TODO: batch the steam requests into one request, since the steam API
         // supports it
         initSteamWatcher(service.username, sendUpdate);
-      } else if (service.service === 'github') {
+      } else if (service.name === 'github') {
         initGithubWatcher(service.username, sendUpdate);
       } else {
-        throw new Error('unsupported service: ' + service.service);
+        throw new Error('unsupported service: ' + service.name);
       }
     });
   });
@@ -105,7 +137,8 @@ function initGithubWatcher(username, sendUpdate) {
         user: username,
         eventType: latestEvent.type,
         timeAgo: moment(latestEvent.created_at, moment.ISO_8601).fromNow(),
-        repo: latestEvent.repo.name
+        repo: latestEvent.repo.name,
+        event: latestEvent.payload
       });
       done();
     });
@@ -143,11 +176,11 @@ function initLastfmWatcher(username, sendUpdate) {
         album: track.album['#text'],
         track: track.name,
         url: track.url,
-        nowPlaying: nowPlaying
+        nowplaying: nowPlaying
       };
 
       if (track.date && track.date.uts) {
-        data.timeAgo = moment.unix(track.date.uts).fromNow();
+        data.timeago = moment.unix(track.date.uts).fromNow();
       }
 
       if (track.image instanceof Array) {
@@ -187,7 +220,7 @@ function initSteamWatcher(username, sendUpdate) {
         }
 
         if (player.personastate === 0 && player.lastlogoff) {
-          data.lastLogoff = moment.unix(player.lastlogoff).fromNow();
+          data.lastlogoff = moment.unix(player.lastlogoff).fromNow();
         }
 
         var stateFlag = STEAM_STATE_FLAGS[player.personastateflags];
@@ -214,11 +247,13 @@ app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req, res) {
   if (process.env.NODE_ENV !== 'production') {
-    mu.clearCache();
+    TEMPLATES = parseTemplates(TEMPLATE_DIR);
   }
-  mu.compileAndRender('index.html', {
-    users: config.users, title: config.title
-  }).pipe(res);
+  var locals = {users: config.users, title: config.title};
+  TEMPLATES.index(locals, function(err, html) {
+    if (err) { return logError('rendering index.html', err); }
+    res.send(html);
+  });
 });
 
 http.listen(config.port, function() {

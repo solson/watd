@@ -1,0 +1,49 @@
+{% capture repoUrl %}https://github.com/{{repo}}{% endcapture %}
+
+<img class="avatar" src="{{avatar}}" alt="" />
+<b>
+  <a href="https://github.com/{{user}}">{{user}}</a>
+
+  {% case eventType %}
+  {% when 'CreateEvent' %}
+    {% assign type = event.ref_type %}
+    created {{type}}
+    {% case type %}
+    {% when 'repository' %}
+    {% when 'branch' or 'tag' %}
+      <a href="{{repoUrl}}/tree/{{event.ref}}">{{event.ref}}</a> on
+    {% else %}
+      {{event.ref}} on
+    {% endcase %}
+
+  {% when 'IssueCommentEvent' %}
+    made a <a href="{{event.comment.html_url}}">comment</a> on issue
+    <a href="{{event.issue.html_url}}">#{{event.issue.number}}</a> on
+
+  {% when 'IssuesEvent' %}
+    {{event.action}} issue
+    <a href="{{event.issue.html_url}}">#{{event.issue.number}}</a>
+    on
+
+  {% when 'PushEvent' %}
+    pushed
+    {% if event.size == 1 %}
+      <a href="{{repoUrl}}/commit/{{event.before}}">{{event.size}} commit</a>
+    {% else %}
+      <a href="{{repoUrl}}/compare/{{event.before}}...{{event.head}}">
+        {{event.size}} commits
+      </a>
+    {% endif %}
+    to
+
+  {% when 'WatchEvent' %}
+    starred
+
+  {% else %}
+    did a {{eventType}} on
+  {% endcase %}
+
+  <a href="{{repoUrl}}">{{repo}}</a>
+  {{timeAgo}}
+</b>
+

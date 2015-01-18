@@ -1,0 +1,28 @@
+{% if image %}
+  <img class="avatar" src="{{image}}" alt="" />
+{% else %}
+  <img class="avatar" src="https://placekitten.com/g/32/32" alt="" />
+{% endif %}
+
+<b>
+  <a href="http://www.last.fm/user/{{username}}">{{username}}</a>
+
+  {% if nowplaying %}
+    is listening to
+  {% else %}
+    last listened to
+  {% endif %}
+
+  <a href="http://www.last.fm/music/{{artist}}">{{artist}}</a>
+  &mdash;
+  <a href="{{url}}">{{track}}</a>
+
+  {% if album %}
+    &mdash;
+    <a href="http://www.last.fm/music/{{artist}}/{{album}}">{{album}}</a>
+  {% endif %}
+
+  {% if timeago %}
+    {{timeago}}
+  {% endif %}
+</b>

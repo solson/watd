@@ -4,16 +4,16 @@ var users = [
   {
     name: 'philip',
     services: [
-      {service: 'lastfm', username: 'fryfm'},
-      {service: 'steam', username: '76561198036964321'}
+      {name: 'lastfm', username: 'fryfm'},
+      {name: 'steam', username: '76561198036964321'}
     ]
   },
   {
     name: 'bender',
     services: [
-      {service: 'github', username: 'OnesAndZeros'},
-      {service: 'lastfm', username: 'BenderIsGreat'},
-      {service: 'steam', username: '76561198040534321'}
+      {name: 'github', username: 'OnesAndZeros'},
+      {name: 'lastfm', username: 'BenderIsGreat'},
+      {name: 'steam', username: '76561198040534321'}
     ]
   }
 ];

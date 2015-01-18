@@ -11,16 +11,16 @@
   <body>
     <div class="container-fluid">
       <h1>{{title}}</h1>
-      {{#users}}
-        <div id="{{name}}">
-          <h2>{{name}}</h2>
-          {{#services}}
-            <div class="{{service}}">
-              {{{cachedHtml}}}
+      {% for user in users %}
+        <div id="{{user.name}}">
+          <h2>{{user.name}}</h2>
+          {% for service in user.services %}
+            <div class="{{service.name}}">
+              {{service.cachedHtml}}
             </div>
-          {{/services}}
+          {% endfor %}
         </div>
-      {{/users}}
+      {% endfor %}
     </div>
 
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>

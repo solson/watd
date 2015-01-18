@@ -1,0 +1,12 @@
+{% if avatar %}
+  <img class="avatar" src="{{avatar}}" alt="" />
+{% endif %}
+
+<b>
+  <a href="{{profileUrl}}">{{username}}</a>
+  is {{state}}
+
+  {% if lastlogoff %}
+    (last online {{lastlogoff}})
+  {% endif %}
+</b>

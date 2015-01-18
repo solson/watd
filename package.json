@@ -8,9 +8,9 @@
     "github": "^0.2.3",
     "lastfm": "^0.9.2",
     "moment": "^2.8.4",
-    "mu2": "^0.5.20",
     "socket.io": "^1.2.1",
-    "steam-webapi": "^0.6.4"
+    "steam-webapi": "^0.6.4",
+    "tinyliquid": "^0.2.27"
   },
   "devDependencies": {},
   "scripts": {
