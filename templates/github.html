@@ -5,10 +5,16 @@
   <a href="https://github.com/{{user}}">{{user}}</a>
 
   {% case eventType %}
+  {% when 'CommitCommentEvent' %}
+    made a <a href="{{event.comment.html_url}}">comment</a> on commit
+    <a href="{{repoUrl}}/commit/{{event.comment.commit_id}}">
+      {{event.comment.commit_id | truncate: 7}}
+    </a>
+    on
+
   {% when 'CreateEvent' %}
-    {% assign type = event.ref_type %}
-    created {{type}}
-    {% case type %}
+    created {{event.ref_type}}
+    {% case event.ref_type %}
     {% when 'repository' %}
     {% when 'branch' or 'tag' %}
       <a href="{{repoUrl}}/tree/{{event.ref}}">{{event.ref}}</a> on
