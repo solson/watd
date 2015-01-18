@@ -25,6 +25,11 @@
   {% when 'DeleteEvent' %}
     deleted {{event.ref_type}} {{event.ref}} on
 
+  {% when 'ForkEvent' %}
+    forked
+    <a href="{{event.forkee.html_url}}">{{event.forkee.full_name}}</a>
+    from
+
   {% when 'IssueCommentEvent' %}
     made a <a href="{{event.comment.html_url}}">comment</a> on issue
     <a href="{{event.issue.html_url}}">#{{event.issue.number}}</a> on
