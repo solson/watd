@@ -1,6 +1,6 @@
 {
   "name": "watd",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "What Are They Doing?",
   "main": "app.js",
   "dependencies": {

@@ -9,7 +9,7 @@ Supported Services
 ------------------
 * [last.fm][lastfm]
 * [Steam][steam]
-* [GitHub][github] (partial)
+* [GitHub][github]
 
 
 License
