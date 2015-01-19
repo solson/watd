@@ -49,6 +49,9 @@
     <a href="{{event.pull_request.html_url}}">#{{event.pull_request.number}}</a>
     on
 
+  {% when 'PublicEvent' %}
+    open sourced
+
   {% when 'PushEvent' %}
     pushed
     {% if event.size == 1 %}
