@@ -81,7 +81,7 @@
     to
 
   {% when 'ReleaseEvent' %}
-  released <a href="{{event.release.html_url}}">{{event.release.name}}</a> on
+    released <a href="{{event.release.html_url}}">{{event.release.name}}</a> on
 
   {% when 'WatchEvent' %}
     starred
@@ -93,4 +93,3 @@
   <a href="{{repoUrl}}">{{repo}}</a>
   {{timeAgo}}
 </b>
-
