@@ -30,6 +30,10 @@
     <a href="{{event.forkee.html_url}}">{{event.forkee.full_name}}</a>
     from
 
+  {% when 'GollumEvent' %}
+    edited {{event.pages.length}} <a href="{{repoUrl}}/wiki">wiki</a>
+    {{event.pages.length | pluralize: 'page', 'pages'}} on
+
   {% when 'IssueCommentEvent' %}
     made a <a href="{{event.comment.html_url}}">comment</a> on
     {% if event.issue.pull_request %}
