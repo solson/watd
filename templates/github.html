@@ -44,13 +44,20 @@
     <a href="{{event.issue.html_url}}">#{{event.issue.number}}</a>
     on
 
+  {% when 'PublicEvent' %}
+    open sourced
+
   {% when 'PullRequestEvent' %}
     {{event.action}} pull request
     <a href="{{event.pull_request.html_url}}">#{{event.pull_request.number}}</a>
     on
 
-  {% when 'PublicEvent' %}
-    open sourced
+  {% when 'PullRequestReviewCommentEvent' %}
+    made a
+    <a href="{{event.comment.html_url}}">comment</a>
+    on the diff of pull request
+    <a href="{{event.pull_request.html_url}}">#{{event.pull_request.number}}</a>
+    on
 
   {% when 'PushEvent' %}
     pushed
