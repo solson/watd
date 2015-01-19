@@ -72,7 +72,7 @@
   {% when 'PushEvent' %}
     pushed
     {% if event.size == 1 %}
-      <a href="{{repoUrl}}/commit/{{event.before}}">{{event.size}} commit</a>
+      <a href="{{repoUrl}}/commit/{{event.head}}">{{event.size}} commit</a>
     {% else %}
       <a href="{{repoUrl}}/compare/{{event.before}}...{{event.head}}">
         {{event.size}} commits
