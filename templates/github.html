@@ -31,7 +31,12 @@
     from
 
   {% when 'IssueCommentEvent' %}
-    made a <a href="{{event.comment.html_url}}">comment</a> on issue
+    made a <a href="{{event.comment.html_url}}">comment</a> on
+    {% if event.issue.pull_request %}
+      pull request
+    {% else %}
+      issue
+    {% endif %}
     <a href="{{event.issue.html_url}}">#{{event.issue.number}}</a> on
 
   {% when 'IssuesEvent' %}
