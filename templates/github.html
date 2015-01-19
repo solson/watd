@@ -48,6 +48,12 @@
     <a href="{{event.issue.html_url}}">#{{event.issue.number}}</a>
     on
 
+  {% when 'MemberEvent' %}
+    added
+    <img class="small-avatar" src="{{event.member.avatar_url}}" alt="" />
+    <a href="{{event.member.html_url}}">{{event.member.login}}</a>
+    as a collaborator on
+
   {% when 'PublicEvent' %}
     open sourced
 
